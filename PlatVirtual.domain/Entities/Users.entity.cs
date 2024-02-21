@@ -27,14 +27,14 @@ namespace PlatVirtual.Domain.Entities
         [StringLength(255)]
         public string Password { get; set; }
         [StringLength(20)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         [Required]
-        public DateOnly BirthDay { get; set; }
+        public DateOnly? BirthDay { get; set; }
         [Required]
         public Guid RoleId { get; set; }
         [StringLength(255)]
-        public string Address { get; set; }
-        public string Img { get; set; }
+        public string? Address { get; set; }
+        public string? Img { get; set; }
         [DefaultValue(true)]
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

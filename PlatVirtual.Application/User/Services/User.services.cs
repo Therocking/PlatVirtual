@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using PlatVirtual.Application.User.Dtos;
+using PlatVirtual.Application.User.Exceptions;
 using PlatVirtual.Application.User.Helpers;
 using PlatVirtual.Application.User.Interfaces;
 using PlatVirtual.Application.User.Services.Projections;
@@ -23,7 +24,8 @@ namespace PlatVirtual.Application.User.Services
         public async Task<UserResponseDto> Login(LoginUserDto loginDto)
         {
             var user = await _repository.GetByEmail(loginDto.Email);
-            //if(!Bcrypt.ComparePass(user.Password, loginDto.Password))
+            if (user is null) throw new UserNotFoundException();
+            if (!Bcrypt.ComparePass(user.Password, loginDto.Password)) throw new InvalidPassword();
             
             return UserResponse.UserToUserResponse(user);
         }
@@ -42,12 +44,13 @@ namespace PlatVirtual.Application.User.Services
         {
             var users = await _repository.GetAll();
 
-            return (List<UserResponseDto>)users.Select(e => UserResponse.UserToUserResponse(e));
+            return users.Select(e => UserResponse.UserToUserResponse(e)).ToList();
         }
 
         public async Task<UserResponseDto> GetById(Guid id)
         {
             var user = await _repository.GetById(id);
+            if (user is null) throw new UserNotFoundException();
 
             return UserResponse.UserToUserResponse(user);
         }
@@ -56,6 +59,8 @@ namespace PlatVirtual.Application.User.Services
         public async Task<UserResponseDto> Update(UpdateUserDto updateDto)
         {
             var user = await _repository.GetById(updateDto.Id);
+            if (user is null) throw new UserNotFoundException();
+
             user.FirstName = updateDto.FirstName;
             user.LastName = updateDto.LastName;
             user.PhoneNumber = updateDto.PhoneNumber;
@@ -67,6 +72,8 @@ namespace PlatVirtual.Application.User.Services
         public async Task<UserResponseDto> Delete(Guid id)
         {
             var user = await _repository.GetById(id);
+            if(user is null) throw new UserNotFoundException();
+
             user.IsActive = false;
             await _repository.Update(user);
 

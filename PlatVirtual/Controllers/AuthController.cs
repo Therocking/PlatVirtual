@@ -22,7 +22,7 @@ namespace PlatVirtual.Controllers
             try
             {
                 var user = await _service.Register(registerDto);
-                return StatusCode(200, user);
+                return StatusCode(202, user);
             }
             catch (Exception e)
             {
