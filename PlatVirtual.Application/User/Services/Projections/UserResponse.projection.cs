@@ -19,7 +19,7 @@ namespace PlatVirtual.Application.User.Services.Projections
                 LastName = user.LastName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                BirthDay = user.BirthDay.Value,
+                BirthDay = user.BirthDay,
                 Role = user.RoleId,
                 Adrress = user.Address,
                 Img = user.Img,

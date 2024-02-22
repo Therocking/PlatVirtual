@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatVirtual.Application.User.Dtos;
 using PlatVirtual.Application.User.Interfaces;
+using PlatVirtual.Application.User.Validations;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +22,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new RegisterValidator();
+                var result = validator.Validate(registerDto);
+                if(!result.IsValid) return BadRequest(result.Errors);
+
                 var user = await _service.Register(registerDto);
                 return StatusCode(202, user);
             }
@@ -35,6 +40,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new LoginValidator();
+                var resuls = validator.Validate(loginDto);
+                if (!resuls.IsValid) return BadRequest(resuls.Errors);
+
                 var user = await _service.Login(loginDto);
                 return Ok(user);
             }

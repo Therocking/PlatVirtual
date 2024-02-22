@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatVirtual.Application.Enrollment.Dtos;
 using PlatVirtual.Application.Enrollment.Interfaces;
+using PlatVirtual.Application.Enrollment.Validators;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +22,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new CreateEnrollmentValidator();
+                var result = validator.Validate(createDto);
+                if(!result.IsValid) return BadRequest(result.Errors);
+
                 var enrollment = await _service.Add(createDto);
                 return StatusCode(200, enrollment);
             }

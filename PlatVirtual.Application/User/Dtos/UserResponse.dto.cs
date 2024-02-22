@@ -14,7 +14,7 @@ namespace PlatVirtual.Application.User.Dtos
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public DateOnly BirthDay { get; set; }
+        public DateOnly? BirthDay { get; set; }
         public Guid Role { get; set; }
         public string Adrress { get; set; }
         public string Img { get; set; }

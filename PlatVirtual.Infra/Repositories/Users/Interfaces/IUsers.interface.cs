@@ -10,6 +10,6 @@ namespace PlatVirtual.Infra.Repositories.UsersInterfaces
 {
     public interface IUsersRepository: IRepository<Users>
     {
-        public Task<Users> GetByEmail(string email);
+        public Task<Users?> GetByEmail(string email);
     }
 }

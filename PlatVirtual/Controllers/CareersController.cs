@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatVirtual.Application.Career.Dtos;
 using PlatVirtual.Application.Career.Interfaces;
+using PlatVirtual.Application.Career.Validations;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +22,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new CreateCareerValidator();
+                var result = validator.Validate(createDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 var career = await _service.Add(createDto);
                 return StatusCode(200, career);
             }
@@ -77,6 +82,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new UpdateCareerValidator();
+                var result = validator.Validate(updateDto);
+                if(!result.IsValid) return BadRequest(result.Errors);
+
                 updateDto.Id = id;
                 var career = await _service.Update(updateDto);
                 return Ok(career);

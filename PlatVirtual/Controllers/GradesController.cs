@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatVirtual.Application.Grade.Dtos;
 using PlatVirtual.Application.Grade.Interfaces;
+using PlatVirtual.Application.Grade.validations;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +22,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new CreateGradeValidator();
+                var result = validator.Validate(createDto);
+                if(!result.IsValid) return BadRequest(result.Errors);
+
                 var grade = await _service.Add(createDto);
                 return StatusCode(200, grade);
             }
@@ -77,6 +82,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new UpdateGradeValidator();
+                var result = validator.Validate(updateDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 updateDto.Id = id;
                 var grade = await _service.Update(updateDto);
                 return Ok(grade);

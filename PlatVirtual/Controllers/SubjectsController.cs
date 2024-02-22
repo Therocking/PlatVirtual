@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatVirtual.Application.Subject.Dtos;
 using PlatVirtual.Application.Subject.Interfaces;
+using PlatVirtual.Application.Subject.Validations;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +22,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new CreateSubject();
+                var result = validator.Validate(createDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 var subject = await _service.Add(createDto);
                 return Ok(subject);
             }
@@ -105,6 +110,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new UpdateValidator();
+                var result = validator.Validate(updateDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 updateDto.Id = id;
                 var subject = await _service.Update(updateDto);
                 return Ok(subject);

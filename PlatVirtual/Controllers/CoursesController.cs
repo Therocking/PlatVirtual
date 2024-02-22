@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlatVirtual.Application.Career.Validations;
 using PlatVirtual.Application.Course.Dtos;
 using PlatVirtual.Application.Course.Interfaces;
+using PlatVirtual.Application.Course.Validators;
 
 namespace PlatVirtual.Controllers
 {
@@ -21,6 +23,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new CreateCourseValidator();
+                var result = validator.Validate(createDto);
+                if (result.IsValid) return BadRequest(result.Errors);
+
                 var course = await _service.Add(createDto);
                 return StatusCode(200, course);
             }
@@ -77,6 +83,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new UpdateCourseValidator();
+                var result = validator.Validate(updateDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 updateDto.Id = id;
                 var course = await _service.Update(updateDto);
                 return Ok(course);

@@ -35,7 +35,7 @@ namespace PlatVirtual.Infra.Repositories.UsersRepository
             return await _context.Users.Where(e => e.IsActive && e.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Users> GetByEmail(string email)
+        public async Task<Users?> GetByEmail(string email)
         {
             return await _context.Users.Where(e => e.IsActive && e.Email == email).FirstOrDefaultAsync();
         }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using PlatVirtual.Application.Interfaces;
 using PlatVirtual.Application.User.Dtos;
 using PlatVirtual.Application.User.Interfaces;
+using PlatVirtual.Application.User.Validations;
 
 namespace PlatVirtual.Controllers
 {
@@ -13,7 +14,7 @@ namespace PlatVirtual.Controllers
     {
         private readonly IUserServices _services;
 
-        public UsersController(IUserServices services, IUploadImg uploadImg)
+        public UsersController(IUserServices services)
         {
             _services = services;
         }
@@ -51,6 +52,10 @@ namespace PlatVirtual.Controllers
         {
             try
             {
+                var validator = new UpdateValidator();
+                var result = validator.Validate(updateDto);
+                if (!result.IsValid) return BadRequest(result.Errors);
+
                 updateDto.Id = id;
                 var user = await _services.Update(updateDto);
                 return Ok(user);
