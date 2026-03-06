@@ -31,13 +31,13 @@ jobs:
 
       - name: Tag image
         run: |
-          docker tag plataforma-virtual:latest ghcr.io/${{ github.repository }}:latest
-          docker tag plataforma-virtual:latest ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker tag plataforma-virtual:latest ghcr.io/plataforma-virtual:latest
+          docker tag plataforma-virtual:latest ghcr.io/plataforma-virtual:${{ github.sha }}
 
       - name: Login GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image
         run: |
-          docker push ghcr.io/${{ github.repository }}:latest
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker push ghcr.io/plataforma-virtual:latest
+          docker push ghcr.io/plataforma-virtual:${{ github.sha }}
